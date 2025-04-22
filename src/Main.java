@@ -14,6 +14,8 @@ public class Main {
             int[] arr = CSVUtils.readCSV(filePath);
             Logger.initLogFile();
 
+            long totalTimeUs = 0;
+            double totalEnergyJ = 0.0;
 
             for (int i = 0; i < 400; i++) {
                 int[] copy = arr.clone();
@@ -44,10 +46,18 @@ public class Main {
                 double energyJ = timeUs / 1_000.0 * simulatedPower;
 
                 Logger.log(algorithm, arr.length, i + 1, timeUs, energyJ);
+                totalTimeUs += timeUs;
+                totalEnergyJ += energyJ;
+
             }
 
             Logger.closeLogFile();
 
+            double averageTimeUs = totalTimeUs / 400.0;
+            double averageEnergyJ = totalEnergyJ / 400.0;
+
+            System.out.printf("Average Time (μs): %.2f\n", averageTimeUs);
+            System.out.printf("Average Energy (J): %.4f\n", averageEnergyJ);
             System.out.println("Completed 400 runs of " + algorithm + " sort.");
 
         } catch (IOException e) {
